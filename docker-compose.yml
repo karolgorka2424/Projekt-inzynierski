@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: ./backend/RespiraLibere.Api
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/respira.db
+      - JwtSettings__Key=REPLACE_WITH_A_STRONG_KEY_ChangeThis
+    volumes:
+      - dbdata:/app/data
+      - ./data/keys:/root/.aspnet/DataProtection-Keys
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  dbdata:
+
