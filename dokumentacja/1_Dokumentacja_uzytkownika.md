@@ -7,7 +7,7 @@ Respira Libere to aplikacja webowa do monitorowania stanu pacjentów (astma/obja
 - **Patient** – dostęp wyłącznie do własnych danych (przegląd i edycja pomiarów/objawów/wyzwalaczy/leków), brak dostępu do listy pacjentów.
 
 ## Dostęp do aplikacji
-- URL backendu domyślnie: `http://localhost:5000` (dev). Frontend: `http://localhost:3000` (CRA) lub statyczny build.
+- Projekt działa lokalnie (brak publicznego środowiska). URL backendu: `http://localhost:5000`. Frontend: `http://localhost:3000` (CRA) lub statyczny build.
 - Logowanie: email/username + hasło. Konta demo z seedera: `admin@example.com`, `lekarz@example.com`, `pacjent@example.com` (hasło `Password1!`).
 - Reset hasła: opcja w menu konta (wysyła token zwrotny w odpowiedzi API do celów testowych).
 

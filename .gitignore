@@ -3,3 +3,28 @@ data/
 node_modules/
 .DS_Store
 .env
+
+# .NET build artifacts
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Databases and logs
+*.db
+*.db-shm
+*.db-wal
+*.log
+
+# Frontend build/test outputs
+frontend/build/
+coverage/
+
+# IDE/editor settings
+.idea/
+.vscode/

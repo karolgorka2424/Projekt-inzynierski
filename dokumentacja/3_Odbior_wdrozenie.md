@@ -1,21 +1,19 @@
 # Odbiór i wdrożenie
 
 ## Procedura odbioru
-- Środowisko test/uat z migracjami i seedem kont demo (Admin/Doctor/Patient) oraz przykładowymi pacjentami.
+- Środowisko: lokalne (API `http://localhost:5000`, front `http://localhost:3000`), po migracjach i seedzie kont demo (Admin/Doctor/Patient) oraz przykładowych pacjentów.
 - Kryteria akceptacji: logowanie, role (Patient nie widzi innych pacjentów), CRUD na pomiarach/objawach/wyzwalaczach/lekach, eksport CSV/PDF, poprawne komunikaty 403/404, brak błędów krytycznych w logach.
 - Protokół zgodności z zamówieniem + lista usterek; harmonogram poprawek i retest.
 
-## Warunki wstępne do wdrożenia
-- Techniczne: .NET 10 runtime, baza (SQLite domyślnie lub docelowa), reverse proxy/HTTPS (dla prod – do dodania gdy pojawi się domena), Node jeśli build frontu na serwerze.
+## Warunki wstępne do uruchomienia (lokal)
+- Techniczne: .NET 10 runtime, SQLite (domyślna baza), Node jeśli build frontu na tej samej maszynie.
 - Konfiguracja: connection string, `JwtSettings:Key/Issuer/Audience/DurationInMinutes`, klucz do AirPollen (jeśli używany).
 - Dane startowe: `dotnet ef database update` + seeder ról i kont demo (wykonywany przy starcie aplikacji).
 
-## Proces wdrożenia (prod)
-- Na ten moment brak środowiska prod – pracujemy lokalnie. Gdy środowisko będzie gotowe:
-	- Backend: `dotnet publish -c Release -o out`; wdrożenie (systemd/docker), ustawienie env dla JWT/DB, migracje przed startem.
-	- Frontend: `npm run build`; deploy statyczny (nginx/Apache/S3+CF). Ustawić adres API w env frontu.
-	- CORS/HTTPS: dodać domenę prod do CORS, włączyć HTTPS na reverse proxy.
-	- Okno wdrożeniowe: opcjonalnie pilotaż / ograniczona grupa.
+## Proces uruchomienia (lokal)
+- Backend: `dotnet run --urls http://localhost:5000` (po `dotnet ef database update`).
+- Frontend: `npm start` (CRA proxy do API) lub `npm run build` i serwowanie statyczne.
+- CORS: domyślnie localhost; jeśli front jest na innym porcie/hostie, dopisać go do listy w konfiguracji.
 
 ## Kopia zapasowa
 - Zakres: baza danych, pliki konfiguracyjne, sekrety (osobno), ewentualne dane generowane (raporty) jeśli są utrzymywane.

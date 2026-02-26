@@ -11,7 +11,7 @@ Opis architektury, zależności, uruchomienia, API, bazy danych i procedur opera
 ## Wymagania środowiskowe
 - .NET SDK 10.x, Node 18+ (dla build frontendu), SQLite (wbudowany), przeglądarka Chromium/Chrome/Edge.
 - Dev URL: API `http://localhost:5000`, Front `http://localhost:3000`.
-- Brak środowiska prod: pracujemy lokalnie; gdy pojawi się domena prod, dodamy ją do CORS i włączymy HTTPS na reverse proxy.
+- Brak środowiska prod – projekt używany lokalnie. Jeśli ktoś uruchamia z innego hosta, trzeba dopisać jego adres do CORS.
 
 ## Zależności kluczowe (backend)
 - Microsoft.AspNetCore.Authentication.JwtBearer 7.0.0
@@ -20,14 +20,13 @@ Opis architektury, zależności, uruchomienia, API, bazy danych i procedur opera
 - QuestPDF 2024.3.0 (PDF)
 - System.IdentityModel.Tokens.Jwt 8.15.0
 
-## Konfiguracja
 - appsettings.json: `JwtSettings:{Key,Issuer,Audience,DurationInMinutes}`, `ConnectionStrings:DefaultConnection` (domyślnie `Data Source=respira.db`).
 - Ustaw JWT key przez env (np. `export JwtSettings__Key=$(openssl rand -hex 32)`); nie używaj klucza z pliku w środowisku innym niż lokal dev.
-- CORS: dla lokalnego frontu ustawione na localhost:3000; gdy pojawi się prod, dodaj domenę.
+- CORS: tylko localhost (front 3000, API 5000). Jeśli front uruchamiasz z innego hosta/portu, dopisz go do listy.
 - Role i konta demo w seederze (Admin/Doctor/Patient) – ładowane przy starcie po migracjach.
 
 ## Model danych (skrót)
-- Patients(Id, Name, Notes)
+- Patients(Id, OwnerUserId, Name, Notes)
 - Measurements(Id, PatientId, Value, Tag, RecordedAt)
 - SymptomEntries(Id, PatientId, RecordedAt, Notes/Severity jeśli w modelu)
 - TriggerEntries(Id, PatientId, RecordedAt, Description/Tag)
@@ -51,14 +50,15 @@ Opis architektury, zależności, uruchomienia, API, bazy danych i procedur opera
 3) `dotnet run --urls http://localhost:5000` (API).
 4) Frontend: `npm start` (proxy do API) lub zdefiniować `REACT_APP_API_URL` i użyć `npm start`/`npm run build`.
 
-## Uruchomienie (prod)
-- Backend: `dotnet publish -c Release -o out`; uruchomić przez systemd/docker/reverse proxy; skonfigurować HTTPS i CORS (AllowLocalhostFrontend lub własna domena).
-- Frontend: `npm run build`, serwować statycznie (nginx/Apache). Skonfigurować API URL w env.
-- Sekrety/JWT klucze przechowywać poza repo (env/secret store).
+## Uruchomienie (opcjonalnie poza zakresem projektu)
+- Nie ma planu środowiska produkcyjnego. Jeśli ktoś będzie chciał wdrożyć:
+	- Backend: `dotnet publish -c Release -o out`; uruchomić przez systemd/docker/reverse proxy; skonfigurować HTTPS i CORS na używany host.
+	- Frontend: `npm run build`, serwować statycznie (nginx/Apache). Skonfigurować API URL w env.
+	- Sekrety/JWT klucze przechowywać poza repo (env/secret store).
 
 ## Monitoring i logowanie
-- Logi domyślnie na stdout (Kestrel); zalecane dodać structured logging (Serilog) w przyszłości.
-- Health check: `/health` (dodany w Program.cs).
+- Logi domyślnie na stdout (Kestrel); można dodać structured logging (Serilog) gdyby projekt był rozwijany dalej.
+- Health check: `/health` (Program.cs).
 
 ## Testy
 - Rekomendacja: testy integracyjne kontrolerów (autoryzacja ról, 403 na cudzym `patientId`), e2e (login, CRUD, eksport).
