@@ -33,10 +33,8 @@ docker-compose up -d
 ```
 
 ## Dokumentacja
-- dokumentacja/szablony/1_Dokumentacja_uzytkownika.md
-- dokumentacja/szablony/2_Dokumentacja_techniczna.md
-- dokumentacja/szablony/3_Odbior_wdrozenie.md
-- dokumentacja/szablony/4_Utrzymanie.md
+- Markdown: dokumentacja/1_Dokumentacja_uzytkownika.md, dokumentacja/2_Dokumentacja_techniczna.md, dokumentacja/3_Odbior_wdrozenie.md, dokumentacja/4_Utrzymanie.md
+- PDF: dokumentacja/instrukcje/ (wersje użytkownik/techniczna/odbiór/utrzymanie)
 
 ## Przydatne
 - Jeśli port zajęty (np. 5000):
