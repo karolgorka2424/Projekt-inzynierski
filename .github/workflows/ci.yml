@@ -52,6 +52,8 @@ jobs:
           dotnet build --configuration Release --no-restore
 
       - name: Run API and smoke test
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
         run: |
           cd backend/RespiraLibere.Api
           dotnet run --project RespiraLibere.Api.csproj --urls http://localhost:5001 --no-build &
