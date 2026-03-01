@@ -46,9 +46,10 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Run API and smoke test
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
         run: |
           cd backend/RespiraLibere.Api
-          # dotnet run domyślnie: Debug build + ASPNETCORE_ENVIRONMENT=Development
           dotnet run --project RespiraLibere.Api.csproj --urls http://localhost:5001 &
           PID=$!
           # Czekaj aż serwer odpowie (max 60s, retry co 3s)
