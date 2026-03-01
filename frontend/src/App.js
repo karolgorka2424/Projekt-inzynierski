@@ -1055,6 +1055,7 @@ function AppWithRouter() {
           {profile && (
             <div className="muted">{profile.userName} ({profile.email})</div>
           )}
+          <a href="http://localhost:5000/swagger" target="_blank" rel="noopener noreferrer" className="ghost" style={{ textDecoration: 'none' }}>Pomoc / API</a>
           <button className="ghost" onClick={handleLogout}>Wyloguj</button>
         </div>
       </header>
