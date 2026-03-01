@@ -45,11 +45,21 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Build API
+        run: |
+          cd backend/RespiraLibere.Api
+          dotnet restore
+          dotnet build --configuration Release --no-restore
+
       - name: Run API and smoke test
         run: |
           cd backend/RespiraLibere.Api
-          dotnet run --project RespiraLibere.Api.csproj --urls http://localhost:5001 &
+          dotnet run --project RespiraLibere.Api.csproj --urls http://localhost:5001 --no-build &
           PID=$!
-          sleep 6
+          # Czekaj aż serwer odpowie (max 30s, retry co 2s)
+          for i in $(seq 1 15); do
+            sleep 2
+            curl -sf http://localhost:5001/health && break
+          done
           curl --fail http://localhost:5001/swagger/index.html
           kill $PID || true
