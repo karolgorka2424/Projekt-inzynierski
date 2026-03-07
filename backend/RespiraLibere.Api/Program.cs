@@ -83,11 +83,12 @@ using (var scope = app.Services.CreateScope())
     await AdminSeeder.SeedAsync(scope.ServiceProvider, builder.Configuration);
 }
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
